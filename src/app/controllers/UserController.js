@@ -15,7 +15,7 @@ class UserController {
     const schema = Yup.object({
       name: Yup.string().required(),
       email: Yup.string().email().required(),
-      password_hash: Yup.string().min(6).required(),
+      password: Yup.string().min(6).required(),
       admin: Yup.boolean(),
     });
 
@@ -26,7 +26,7 @@ class UserController {
     }
 
     const {
-      name, email, password_hash, admin,
+      name, email, password, admin,
     } = request.body;
 
     const userExists = await User.findOne({
@@ -43,7 +43,7 @@ class UserController {
       id: v4(),
       name,
       email,
-      password_hash,
+      password,
       admin,
     });
     return response.status(201).json({
