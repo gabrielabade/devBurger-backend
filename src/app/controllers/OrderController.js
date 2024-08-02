@@ -1,5 +1,4 @@
 import * as Yup from 'yup';
-import Order from '../schemas/Order';
 import Product from '../models/Product';
 import Category from '../models/Category';
 
