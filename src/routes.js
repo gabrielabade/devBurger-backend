@@ -16,7 +16,7 @@ const upload = multer(multerConfig);
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
 
-routes.use(authMiddleware);
+routes.use(authMiddleware); // rotas abaixo só podem ser acessadas com token fazendo login
 
 routes.post('/products', upload.single('file'), ProductController.store);
 routes.get('/products', ProductController.index);
