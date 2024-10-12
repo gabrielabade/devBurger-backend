@@ -1,3 +1,8 @@
+import dotenv from 'dotenv';
 import app from './app';
 
-app.listen(3002, () => console.log('🚀 Server is running at port 3002.. '));
+// Carrega as variáveis do arquivo .env
+dotenv.config();
+const port = +process.env.APP_PORT;
+
+app.listen(port, () => console.log(`🚀 App is running at port ${port}...`));
