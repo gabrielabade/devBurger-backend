@@ -17,10 +17,11 @@ const upload = multer(multerConfig);
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
 
+routes.get('/products', ProductController.index);
+
 routes.use(authMiddleware); // rotas abaixo só podem ser acessadas com token fazendo login
 
 routes.post('/products', upload.single('file'), ProductController.store);
-routes.get('/products', ProductController.index);
 routes.put('/products/:id', upload.single('file'), ProductController.update);
 
 routes.post('/categories', upload.single('file'), CategoryController.store);

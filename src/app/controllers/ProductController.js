@@ -17,7 +17,7 @@ class ProductController {
     } catch (err) {
       return response.status(400).json({ error: err.errors });
     }
-
+    
     const { admin: isAdmin } = await User.findByPk(request.userId);
     if (!isAdmin) {
       return response.status(401).json();
@@ -25,11 +25,12 @@ class ProductController {
 
     const { filename: path } = request.file;
     const {
-      name, price, category_id, offer,
+      name, description, price, category_id, offer,
     } = request.body;
 
     const product = await Product.create({
       name,
+      description,
       price,
       category_id,
       path,
@@ -42,6 +43,7 @@ class ProductController {
   async update(request, response) {
     const schema = Yup.object({
       name: Yup.string(),
+      description: Yup.string(),
       price: Yup.number(),
       category_id: Yup.number(),
       offer: Yup.boolean(),
@@ -70,11 +72,12 @@ class ProductController {
     }
 
     const {
-      name, price, category_id, offer,
+      name, description, price, category_id, offer,
     } = request.body;
 
     await Product.update({
       name,
+      description,
       price,
       category_id,
       path,
