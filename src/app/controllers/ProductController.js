@@ -17,7 +17,7 @@ class ProductController {
     } catch (err) {
       return response.status(400).json({ error: err.errors });
     }
-
+    
     const { admin: isAdmin } = await User.findByPk(request.userId);
     if (!isAdmin) {
       return response.status(401).json();

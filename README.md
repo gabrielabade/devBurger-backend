@@ -1,119 +1,165 @@
-database.js
+# API Documentation 
 
-alterar para o seu database
+## Overview 
 
-criar database docker
-docker-compose.yml
-DOCKER_DEFAULT_PLATFORM=linux/amd64
+This API provides endpoints for managing users, categories, products, and orders. 
 
-logs para debug
-docker logs -f <container-name>
+## Getting Started 
 
-migração
+## Prerequisites 
+- Docker
+- Docker Compose
+- Node.js
+- Yarn 
+
+## Installation
+```bash
+# Clone the repository
+git clone [repository-url]
+# Navigate to the project directory
+cd [project-directory]
+# Install dependencies
+yarn install
+# Set up the database
+docker-compose up -d
+# on linux
+DOCKER_DEFAULT_PLATFORM=linux/amd64DOCKER_DEFAULT_PLATFORM=linux/amd64DOCKER_DEFAULT_PLATFORM=linux/amd64
+# Run migrations
 npx sequelize db:migrate
+# Start the application
+yarn dev
+```
 
-how to start
+# API Endpoints 
+## Users 
+## Create User 
 
-yarn - install dependences
-
-yarn dev - start aplication
-
-
-
-routes:
-
-post    /users
-    curl 'http://localhost:3002/users' \
-    --header 'Content-Type: application/json' \
-    --data-raw '{
-        "name": "teste2",
-        "email": "teste@teste2",
-        "password": "teste232"
-    }'
-
-admin
+```bash
 curl 'http://localhost:3002/users' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "name": "teste2",
-	"email": "teste@teste2",
-    "password": "teste232",
-    "admin": "True"
+"name": "John Doe",
+"email": "john@example.com",
+"password": "password123"
 }'
+```
 
-Post    /sessions
-    curl 'http://localhost:3002/sessions' \
-    --header 'Content-Type: application/json' \
-    --data-raw '{
-        "email": "teste@teste2",
-        "password": "teste232"
-    }'
+## Create Admin User
 
-Get    /categories
-    curl 'http://localhost:3002/categories' \
-    --header 'Authorization: Bearer {{token}}'
+```bash
+curl 'http://localhost:3002/users' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+"name": "Admin User",
+"email": "admin@example.com",
+"password": "adminpass123",
+"admin": "True"
+}'
+```
 
-Post    /categories/:id
-    curl 'http://localhost:3002/categories' \
-    --header 'Authorization: Bearer {{token}}' \
-    --form 'file=@"/home/folkz/Downloads/wallpaperflare.com_wallpaper.jpg"' \
-    --form 'name="breakin"'
+## Authentication
+## Create Session 
 
-Put    /categories
-    curl --request PUT 'http://localhost:3002/categories/1' \
-    --header 'Authorization: Bearer {{token}}' \
-    --form 'file=@"/home/folkz/Downloads/breaking-bad-rv-interior.jpg"' \
-    --form 'name="breaking-bad"'
+```bash
+curl 'http://localhost:3002/sessions' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+"email": "john@example.com",
+"password": "password123"
+}'
+```
 
+## Categories 
+## Get Categories 
 
-Get    /products
-    curl 'http://localhost:3002/products' \
-    --header 'Authorization: Bearer {{token}}'
+```bash
+curl 'http://localhost:3002/categories' \
+--header 'Authorization: Bearer {{token}}'
+```
+## Create Category 
 
-Post    /products
-    curl 'http://localhost:3002/products' \
-    --header 'Authorization: Bearer {{token}}' \
-    --form 'name="walter"' \
-    --form 'description="serotonina + paste"' \
-    --form 'price="12"' \
-    --form 'id="2"' \
-    --form 'category_id="1"' \
-    --form 'file=@"/home/folkz/Downloads/eu.jpg"'
+```bash
+curl 'http://localhost:3002/categories' \
+--header 'Authorization: Bearer {{token}}' \
+--form 'file=@"/path/to/image.jpg"' \
+--form 'name="Category Name"'
+```
+## Update Category 
 
-Put    /products/:id
-    curl --request PUT 'http://localhost:3002/products/8' \
-    --header 'Authorization: Bearer {{token}}' \
-    --form 'name="meth"' \
-    --form 'description="serotonina + pastel"' \
-    --form 'price="12.90"' \
-    --form 'file=@"/home/folkz/Downloads/deu_bom___logo_preta.png"'
+```bash
+curl --request PUT 'http://localhost:3002/categories/1' \
+--header 'Authorization: Bearer {{token}}' \
+--form 'file=@"/path/to/new-image.jpg"' \
+--form 'name="Updated Category Name"'
+```
+## Products 
+## Get Products 
 
-GET    /orders
-    curl 'http://localhost:3002/orders' \
-    --header 'Authorization: Bearer {{token}}'
+```bash
+curl 'http://localhost:3002/products'
+```
+## Create Product
 
-POST    /orders
-    curl 'http://localhost:3002/orders' \
-    --header 'Content-Type: application/json' \
-    --header 'Authorization: Bearer {{token}}' \
-    --data '{
-    "products": [
-        {
-        "id": 1,
-        "quantity": 1
-        },
-        {
-        "id": 2,
-        "quantity": 2
-        }
-    ]
-    }'
+```bash
+curl 'http://localhost:3002/products' \
+--header 'Authorization: Bearer {{token}}' \
+--form 'name="Product Name"' \
+--form 'description="Product Description"' \
+--form 'price="19.99"' \
+--form 'category_id="1"' \
+--form 'file=@"/path/to/product-image.jpg"'
+```
 
-PUT    /orders/:id
-    curl --request PUT 'http://localhost:3002/orders/670a739a6602b78630d1507f' \
-    --header 'Content-Type: application/json' \
-    --header 'Authorization: Bearer {{token}}' \
-    --data '{
-    "status": "Entregue"
-    }'
+## Update Product 
 
+```bash
+curl --request PUT 'http://localhost:3002/products/1' \
+--header 'Authorization: Bearer {{token}}' \
+--form 'name="Updated Product Name"' \
+--form 'description="Updated Product Description"' \
+--form 'price="29.99"' \
+--form 'file=@"/path/to/updated-product-image.jpg"'
+```
+
+## Orders 
+## Get Orders 
+
+```bash
+curl 'http://localhost:3002/orders' \
+--header 'Authorization: Bearer {{token}}'
+```
+
+## Create Order
+
+```bash
+curl 'http://localhost:3002/orders' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer {{token}}' \
+--data '{
+"products": [
+{
+"id": 1,
+"quantity": 2
+},
+{
+"id": 2,
+"quantity": 1
+}
+]
+}'
+```
+
+## Update Order Status 
+
+```bash
+curl --request PUT 'http://localhost:3002/orders/ORDER_ID' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer {{token}}' \
+--data '{
+"status": "Delivered"
+}'
+```
+<!-- ## Contributing 
+Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us. 
+##  License 
+This project is licensed under the [LICENSE NAME] - see the LICENSE.md file for details -->
