@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const calculateOrderAmount = (items) => {
   const total = items.reduce((acc, current) => current.price * current.quantity + acc, 0);
-  return total * 100;
+  return total;
 };
 
 class CreatePaymentIntentController {
