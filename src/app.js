@@ -18,8 +18,9 @@ class App {
 
   middlewares() {
     this.app.use(express.json());
-    this.app.use('/product-file', express.static(resolve(__dirname, '..', 'uploads')));
-    this.app.use('/category-file', express.static(resolve(__dirname, '..', 'uploads')));
+    // Remover as rotas estáticas locais, pois agora estamos usando S3
+    // this.app.use('/product-file', express.static(resolve(__dirname, '..', 'uploads')));
+    // this.app.use('/category-file', express.static(resolve(__dirname, '..', 'uploads')));
   }
 
   routes() {
