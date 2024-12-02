@@ -18,21 +18,31 @@ class ProductController {
       return response.status(400).json({ error: err.errors });
     }
 
+    // Verifica se o usuário tem permissão de admin
     const { admin: isAdmin } = await User.findByPk(request.userId);
     if (!isAdmin) {
       return response.status(401).json();
     }
 
-    const { filename: path } = request.file;
+    // Verifica se o arquivo foi enviado no request
+    if (!request.file) {
+      return response.status(400).json({ error: 'File is required' });
+    }
+
+    // A URL pública do arquivo que foi carregado para o S3
+    const { location: path } = request.file; // location vem do multer-s3
+
     const {
-      name, price, category_id, offer,
+      name, description, price, category_id, offer,
     } = request.body;
 
+    // Criação do produto e salvando a URL no banco de dados
     const product = await Product.create({
       name,
+      description,
       price,
       category_id,
-      path,
+      path,  // Salvando o caminho do S3 no banco de dados
       offer,
     });
 
@@ -42,6 +52,7 @@ class ProductController {
   async update(request, response) {
     const schema = Yup.object({
       name: Yup.string(),
+      description: Yup.string(),
       price: Yup.number(),
       category_id: Yup.number(),
       offer: Yup.boolean(),
@@ -66,15 +77,17 @@ class ProductController {
 
     let path;
     if (request.file) {
-      path = request.file.filename;
+      path = request.file.location;  // Aqui você pega a URL do S3
     }
 
     const {
-      name, price, category_id, offer,
+      name, description, price, category_id, offer,
     } = request.body;
 
+    // Atualizando o produto com a nova URL se houver
     await Product.update({
       name,
+      description,
       price,
       category_id,
       path,

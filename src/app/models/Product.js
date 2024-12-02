@@ -4,13 +4,14 @@ class Product extends Model {
   static init(sequelize) {
     super.init({
       name: Sequelize.STRING,
-      price: Sequelize.INTEGER,
+      description: Sequelize.TEXT,
+      price: Sequelize.DECIMAL(10, 2),
       path: Sequelize.STRING,
       offer: Sequelize.BOOLEAN,
       url: {
         type: Sequelize.VIRTUAL,
         get() {
-          return `http://localhost:3002/product-file/${this.path}`;
+          return `${this.path}`;
         },
       },
     }, {
